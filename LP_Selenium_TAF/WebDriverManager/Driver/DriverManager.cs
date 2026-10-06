@@ -1,7 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
 
 namespace WebDriverManager.Driver;
 
@@ -20,14 +18,14 @@ public sealed class DriverManager() : IDriverManager
         options.AddArgument("--disable-notifications");
         options.AddArgument("--start-maximized");
 
-        this._driver = new ChromeDriver(options);
-        this._driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+        _driver = new ChromeDriver(options);
+        _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
     }
 
     public void QuitBrowser()
     {
-        this._driver?.Quit();
-        this._driver?.Dispose();
-        this._driver = null;
+        _driver?.Quit();
+        _driver?.Dispose();
+        _driver = null;
     }
 }
