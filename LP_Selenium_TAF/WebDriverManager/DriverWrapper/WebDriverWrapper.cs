@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using WebDriverManager.Driver;
 
@@ -25,9 +26,13 @@ public class WebDriverWrapper(IDriverManager driverManager, TimeSpan timeout) : 
             return element.Displayed && element.Enabled ? element : null;
         })!;
 
-    public T WaitUntilWithCustomTimeout<T>(Func<IWebDriver, T?> condition, int timeout)
+    public T WaitUntilWithCustomTimeout<T>(Func<IWebDriver, T?> condition, TimeSpan timeout, string? message = null)
     {
-        WebDriverWait wait = new(_driverManager.Driver, TimeSpan.FromSeconds(timeout));
+        WebDriverWait wait = new(_driverManager.Driver, timeout);
+        if (message is not null)
+        {
+            wait.Message = message;
+        }
 
         return wait.Until(condition);
     }
@@ -35,5 +40,12 @@ public class WebDriverWrapper(IDriverManager driverManager, TimeSpan timeout) : 
     public void NavigateTo(string url)
     {
         _driverManager.Driver.Navigate().GoToUrl(url);
+    }
+
+    public void ScrollElementIntoView(IWebElement element)
+    {
+        new Actions(_driverManager.Driver)
+            .ScrollToElement(element)
+            .Perform();
     }
 }

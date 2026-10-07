@@ -82,6 +82,39 @@ public class Tests
         Assert.That(mismatches, Is.Empty, $"Links without '{keyword}': {string.Join(" | ", mismatches)}");
     }
 
+    [TestCase("Code of Ethical Conduct", "Code_of_Ethical_Conduct.pdf")]
+    public void DownloadFile_FromFooter_FileNameMatchesExpected(string itemTitle, string expectedFileName)
+    {
+        _landingPage.AcceptCookies();
+        _landingPage.WaitForCookiesBannerToDisappear();
+
+        _landingPage.ScrollFooterIntoView();
+
+        _landingPage.DownloadFooterItem(itemTitle);
+
+        var filePath = _landingPage.WaitForDownload(_driverManager.DownloadDirectory, expectedFileName, TimeSpan.FromMinutes(1));
+
+        Assert.That(Path.GetFileName(filePath), Is.EqualTo(expectedFileName));
+    }
+
+    [TestCase(2)]
+    [TestCase(3)]
+    public void InsightsCarousel_AfterSwipe_ArticleTitleMatchesCarouselTitle(int numberOfSwipes)
+    {
+        _landingPage.AcceptCookies();
+        _landingPage.WaitForCookiesBannerToDisappear();
+
+        var insightsPage = _landingPage.OpenInsightsPage();
+
+        insightsPage.SwipeCarousel(numberOfSwipes);
+        var carouselTitle = insightsPage.GetActiveSlideTitle();
+
+        var insightsArticlePage = insightsPage.OpenActiveSlideArticle();
+        var articleTitle = insightsArticlePage.GetArticleTitle();
+
+        Assert.That(carouselTitle, Is.EqualTo(articleTitle));
+    }
+
     [TearDown]
     public void TearDown()
     {
