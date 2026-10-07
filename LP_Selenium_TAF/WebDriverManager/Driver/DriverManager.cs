@@ -19,7 +19,6 @@ public sealed class DriverManager() : IDriverManager
         options.AddArgument("--start-maximized");
 
         _driver = new ChromeDriver(options);
-        _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
     }
 
     public void QuitBrowser()

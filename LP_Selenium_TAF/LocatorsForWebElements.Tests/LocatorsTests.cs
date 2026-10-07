@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using NUnit.Framework.Internal;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
+using PageObjects.Pages;
 using WebDriverManager.Driver;
 using WebDriverManager.DriverWrapper;
 
@@ -14,6 +14,7 @@ public class Tests
     private IWebDriverWrapper _webDriverWrapper = null!;
     private string _baseUrl = string.Empty;
     private int _timeout;
+    private LandingPage _landingPage;
 
     [OneTimeSetUp]
     public void OneTimeSetUp()
@@ -36,6 +37,8 @@ public class Tests
 
         _driverManager.StartBrowser();
         _webDriverWrapper.NavigateTo(_baseUrl);
+
+        _landingPage = new LandingPage(_webDriverWrapper);
     }
 
     [TestCase(".NET","Georgia")]
@@ -43,43 +46,21 @@ public class Tests
     [TestCase("Java", "Ukraine")]
     public void SearchPosition_ByCriteria_LatestResultContainsKeyword(string language, string country)
     {
-        var topNavigationRow = _webDriverWrapper.WaitUntilInteractable(By.ClassName("top-navigation__row"));
-        topNavigationRow.FindElement(By.LinkText("Careers")).Click();
 
-        var startSearchButton = _webDriverWrapper.WaitUntilInteractable(By.ClassName("pinned-button"));
-        startSearchButton.FindElement(By.PartialLinkText("START YOUR SEARCH")).Click();
+        var careersGeneralPage = _landingPage.OpenCareersGeneralPage();
 
-        _webDriverWrapper.WaitUntilInteractable(By.XPath("//button[normalize-space()='Accept All']")).Click();
+        var careersSearchPage = careersGeneralPage.OpenCareersSearchPage();
 
-        _webDriverWrapper.Wait.Until(d => !d.FindElements(By.CssSelector("div[aria-label='Cookie banner']")).Any(e => e.Displayed));
+        careersSearchPage.AcceptCookies();
+        careersSearchPage.WaitForCookiesBannerToDisappear();
 
-        var locationSelectDropdown = _webDriverWrapper.WaitUntilInteractable(By.Id("react-select-2-input"));
-        locationSelectDropdown.Clear();
-        locationSelectDropdown.SendKeys(country);
+        careersSearchPage.SearchRemotePosition(language, country);
 
-        _driverManager.Driver.FindElement(By.XPath($"//div[contains(@id,'-option-') and normalize-space()='{country}']")).Click();
+        careersSearchPage.WaitForLoaderCycle();
 
-        var searchKeywordTextbox = _webDriverWrapper.WaitUntilInteractable(By.XPath("//input[@data-testid='search-input']"));
-        searchKeywordTextbox.Clear();
-        searchKeywordTextbox.SendKeys(language);
+        var jobDetailsPage = careersSearchPage.OpenFirstFoundJob();
 
-        WaitForLoaderCycle();
-
-        _webDriverWrapper.WaitUntilInteractable(By.XPath("//div[contains(@class,'sideMenu')]//label[contains(@for,'checkbox-vacancy_type-Remote')]")).Click();
-
-        _webDriverWrapper.WaitUntilInteractable(By.XPath("//form/button[@data-testid='buttonComponent']")).Click();
-
-        WaitForLoaderCycle();
-
-        var firstJobCard = _webDriverWrapper.Wait.Until(d =>
-        {
-            var cards = d.FindElements(By.CssSelector("div[class^='JobCard_panel_']"));
-            return cards.Count > 0 ? cards[0] : null;
-        })!;
-
-        firstJobCard.FindElement(By.TagName("a")).Click();
-
-        var jobTitle = _webDriverWrapper.WaitUntilVisible(By.CssSelector("h1[data-testid='job-details-banner-title']")).Text;
+        var jobTitle = jobDetailsPage.GetJobTitle();
 
         Assert.That(jobTitle, Does.Contain(language));
     }
@@ -89,19 +70,9 @@ public class Tests
     [TestCase("Automation")]
     public void GlobalSearch_ByKeyword_AllResultLinksContainKeyword(string keyword)
     {
-        _driverManager.Driver.FindElement(By.CssSelector("button[class*='header-search__button']")).Click();
+        var searchResultsPage = _landingPage.SearchByKeyword(keyword);
 
-        var searchFieldTextbox = _webDriverWrapper.WaitUntilInteractable(By.Name("q"));
-        searchFieldTextbox.Clear();
-        searchFieldTextbox.SendKeys(keyword);
-
-        _driverManager.Driver.FindElement(By.XPath("//button[descendant::span[@class='bth-text-layer']]")).Click();
-
-        var searchResultLinks = _webDriverWrapper.Wait.Until(d =>
-        {
-            var foundLinks = d.FindElements(By.XPath("//div[@class='search-results__items']/child::article"));
-            return foundLinks.Count > 0 ? foundLinks : null;
-        });
+        var searchResultLinks = searchResultsPage.GetAllSearchResults();
 
         var mismatches = searchResultLinks
             .Select(link => link.Text)
@@ -115,20 +86,5 @@ public class Tests
     public void TearDown()
     {
         _driverManager.QuitBrowser();
-    }
-
-    private void WaitForLoaderCycle()
-    {
-        try
-        {
-            new WebDriverWait(_driverManager.Driver, TimeSpan.FromSeconds(3))
-                .Until(d => d.FindElements(By.CssSelector("div[data-testid='preloader']")).Any(e => e.Displayed));
-        }
-        catch (WebDriverTimeoutException)
-        {
-            return;
-        }
-
-        _webDriverWrapper.Wait.Until(d => !d.FindElements(By.CssSelector("div[data-testid='preloader']")).Any(e => e.Displayed));
     }
 }

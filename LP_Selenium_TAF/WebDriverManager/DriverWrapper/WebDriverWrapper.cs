@@ -25,6 +25,13 @@ public class WebDriverWrapper(IDriverManager driverManager, TimeSpan timeout) : 
             return element.Displayed && element.Enabled ? element : null;
         })!;
 
+    public T WaitUntilWithCustomTimeout<T>(Func<IWebDriver, T?> condition, int timeout)
+    {
+        WebDriverWait wait = new(_driverManager.Driver, TimeSpan.FromSeconds(timeout));
+
+        return wait.Until(condition);
+    }
+
     public void NavigateTo(string url)
     {
         _driverManager.Driver.Navigate().GoToUrl(url);

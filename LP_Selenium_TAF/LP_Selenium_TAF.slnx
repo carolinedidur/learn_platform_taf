@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="LocatorsForWebElements.Tests/LocatorsForWebelements.Tests.csproj" />
+  <Project Path="PageObjects/PageObjects.csproj" Id="5534333e-21ef-4d42-be06-a4ace056df92" />
   <Project Path="WebDriverManager/WebDriverManager.csproj" />
 </Solution>
