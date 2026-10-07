@@ -1,10 +1,10 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
-using WebDriverManager.DriverWrapper;
+﻿using LP.Selenium.TAF.Core.UI.DriverWrapper;
+using OpenQA.Selenium;
 
-namespace PageObjects;
+namespace LP.Selenium.TAF.Core.UI.Pages;
 
-public class LandingPage(IWebDriverWrapper driver) : BasePage(driver)
+public class LandingPage(IWebDriverWrapper driver)
+    : BasePage(driver)
 {
     private static readonly By _topNavigationRowLocator = By.ClassName("top-navigation__row");
     private static readonly By _careersNavigationLinkLocator = By.LinkText("Careers");
@@ -41,7 +41,7 @@ public class LandingPage(IWebDriverWrapper driver) : BasePage(driver)
 
         var findButton = Driver.WaitUntilInteractable(_findButtonLocator);
         findButton.Click();
-        
+
         return new SearchResultsPage(Driver);
     }
 }

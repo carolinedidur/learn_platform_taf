@@ -1,9 +1,10 @@
-﻿using OpenQA.Selenium;
-using WebDriverManager.DriverWrapper;
+﻿using LP.Selenium.TAF.Core.UI.DriverWrapper;
+using OpenQA.Selenium;
 
-namespace PageObjects;
+namespace LP.Selenium.TAF.Core.UI.Pages;
 
-public class CareersSearchPage(IWebDriverWrapper driver) : BasePage(driver)
+public class CareersSearchPage(IWebDriverWrapper driver)
+    : BasePage(driver)
 {
     private static readonly By _loaderLocator = By.CssSelector("div[data-testid='preloader']");
     private static readonly By _locationSelectDropdownLocator = By.Id("react-select-2-input");
@@ -23,17 +24,21 @@ public class CareersSearchPage(IWebDriverWrapper driver) : BasePage(driver)
         var countryOption = Driver.WaitUntilInteractable(By.XPath(string.Format(_countryOptionLocator, country)));
         countryOption.Click();
 
+        WaitForLoaderCycle();
+
         var searchKeywordTextbox = Driver.WaitUntilInteractable(_searchKeywordTextboxLocator);
         searchKeywordTextbox.Clear();
         searchKeywordTextbox.SendKeys(language);
 
         WaitForLoaderCycle();
 
-        var remoteCheckBox = Driver.WaitUntilInteractable(_remoteCheckboxLocator);
-        remoteCheckBox.Click();
-
         var searchButton = Driver.WaitUntilInteractable(_searchButtonLocator);
         searchButton.Click();
+
+        WaitForLoaderCycle();
+
+        var remoteCheckBox = Driver.WaitUntilInteractable(_remoteCheckboxLocator);
+        remoteCheckBox.Click();
     }
 
     public JobDetailsPage OpenFirstFoundJob()
@@ -54,10 +59,7 @@ public class CareersSearchPage(IWebDriverWrapper driver) : BasePage(driver)
     {
         try
         {
-            Driver.WaitUntilWithCustomTimeout(d =>
-            {
-                return d.FindElements(_loaderLocator).Any(e => e.Displayed);
-            }, TimeSpan.FromSeconds(3));
+            Driver.WaitUntilWithCustomTimeout(d => d.FindElements(_loaderLocator).Any(e => e.Displayed), TimeSpan.FromSeconds(1));
         }
         catch (WebDriverTimeoutException)
         {

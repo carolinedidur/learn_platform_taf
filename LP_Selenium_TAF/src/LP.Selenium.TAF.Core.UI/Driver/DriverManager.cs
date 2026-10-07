@@ -1,13 +1,15 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
-namespace WebDriverManager.Driver;
+namespace LP.Selenium.TAF.Core.UI.Driver;
 
-public sealed class DriverManager() : IDriverManager
+public sealed class DriverManager()
+    : IDriverManager
 {
     private IWebDriver? _driver;
 
     public IWebDriver Driver => _driver ?? throw new InvalidOperationException("Browser is not started.");
+
     public string DownloadDirectory { get; private set; } = string.Empty;
 
     public void StartBrowser()

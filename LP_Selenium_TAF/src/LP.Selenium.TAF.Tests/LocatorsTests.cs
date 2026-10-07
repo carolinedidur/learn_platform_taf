@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using LP.Selenium.TAF.Core.UI.Driver;
+using LP.Selenium.TAF.Core.UI.DriverWrapper;
+using LP.Selenium.TAF.Core.UI.Pages;
+using Microsoft.Extensions.Configuration;
 using NUnit.Framework.Internal;
-using PageObjects;
-using WebDriverManager.Driver;
-using WebDriverManager.DriverWrapper;
 
-namespace LocatorsForWebelements.Tests;
+namespace LP.Selenium.TAF.Tests;
 
 [TestFixture]
 public class Tests
@@ -24,9 +24,8 @@ public class Tests
             .Build();
 
         _baseUrl = config["Environment:BaseUrl"] ?? throw new InvalidOperationException("BaseUrl missing.");
-        //_timeout = config.GetValue<int?>("Driver:Timeout") ?? throw new InvalidOperationException("Timeout missing.");
+        _timeout = config.GetValue<int?>("Driver:Timeout") ?? throw new InvalidOperationException("Timeout missing.");
     }
-
 
     [SetUp]
     public void Setup()
@@ -40,12 +39,11 @@ public class Tests
         _landingPage = new LandingPage(_webDriverWrapper);
     }
 
-    [TestCase(".NET","Georgia")]
+    [TestCase(".NET", "Georgia")]
     [TestCase("Python", "Portugal")]
     [TestCase("Java", "Ukraine")]
     public void SearchPosition_ByCriteria_LatestResultContainsKeyword(string language, string country)
     {
-
         var careersGeneralPage = _landingPage.OpenCareersGeneralPage();
 
         var careersSearchPage = careersGeneralPage.OpenCareersSearchPage();

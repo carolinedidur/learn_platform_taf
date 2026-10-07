@@ -1,4 +1,9 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="stylecop.json" />
+  </Folder>
   <Project Path="LP.Selenium.TAF.Core.UI/LP.Selenium.TAF.Core.UI.csproj" Id="0a73f7b1-432d-4d02-b606-a4e4e07432af" />
   <Project Path="LP.Selenium.TAF.Core/LP.Selenium.TAF.Core.csproj" Id="b8f5f975-f5c8-4706-9ec0-a683ab10868c" />
   <Project Path="LP.Selenium.TAF.Tests/LP.Selenium.TAF.Tests.csproj" Id="26590b07-e4b8-4331-a51d-42725b67df51" />

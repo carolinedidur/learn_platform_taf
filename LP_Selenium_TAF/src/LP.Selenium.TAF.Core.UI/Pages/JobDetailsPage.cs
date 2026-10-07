@@ -1,9 +1,10 @@
-﻿using OpenQA.Selenium;
-using WebDriverManager.DriverWrapper;
+﻿using LP.Selenium.TAF.Core.UI.DriverWrapper;
+using OpenQA.Selenium;
 
-namespace PageObjects;
+namespace LP.Selenium.TAF.Core.UI.Pages;
 
-public class JobDetailsPage(IWebDriverWrapper driver) : BasePage(driver)
+public class JobDetailsPage(IWebDriverWrapper driver)
+    : BasePage(driver)
 {
     private static readonly By _jobTitleLocator = By.CssSelector("h1[data-testid='job-details-banner-title']");
 

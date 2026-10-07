@@ -1,7 +1,7 @@
-﻿using OpenQA.Selenium;
-using WebDriverManager.DriverWrapper;
+﻿using LP.Selenium.TAF.Core.UI.DriverWrapper;
+using OpenQA.Selenium;
 
-namespace PageObjects;
+namespace LP.Selenium.TAF.Core.UI.Pages;
 
 public class BasePage
 {
@@ -15,7 +15,7 @@ public class BasePage
         Driver = driver;
     }
 
-    protected IWebDriverWrapper Driver { get;  }
+    protected IWebDriverWrapper Driver { get; }
 
     public void ScrollFooterIntoView()
     {
@@ -32,14 +32,13 @@ public class BasePage
 
     public string WaitForDownload(string directory, string expectedFileName, TimeSpan timeout)
     {
-        string expectedPath = Path.Combine(directory, expectedFileName);
+        var expectedPath = Path.Combine(directory, expectedFileName);
 
         Driver.WaitUntilWithCustomTimeout(
             _ => File.Exists(expectedPath)
-                            && !Directory.EnumerateFiles(directory, "*.crdownload").Any(), 
+                            && !Directory.EnumerateFiles(directory, "*.crdownload").Any(),
             timeout,
-            message: $"'{expectedFileName}' was not downloaded. Files in folder: [" +
-                          string.Join(", ", Directory.EnumerateFiles(directory).Select(Path.GetFileName)) + "]");
+            message: $"'{expectedFileName}' was not downloaded. Files in folder: [{string.Join(", ", Directory.EnumerateFiles(directory).Select(Path.GetFileName))}]");
 
         return expectedPath;
     }

@@ -1,9 +1,10 @@
-﻿using OpenQA.Selenium;
-using WebDriverManager.DriverWrapper;
+﻿using LP.Selenium.TAF.Core.UI.DriverWrapper;
+using OpenQA.Selenium;
 
-namespace PageObjects;
+namespace LP.Selenium.TAF.Core.UI.Pages;
 
-public class InsightArticlePage(IWebDriverWrapper driver) : BasePage(driver)
+public class InsightArticlePage(IWebDriverWrapper driver)
+    : BasePage(driver)
 {
     private static readonly By _titleLocator = By.TagName("h1");
 
