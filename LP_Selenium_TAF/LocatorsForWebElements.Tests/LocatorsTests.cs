@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using NUnit.Framework.Internal;
-using OpenQA.Selenium;
-using PageObjects.Pages;
+using PageObjects;
 using WebDriverManager.Driver;
 using WebDriverManager.DriverWrapper;
 

@@ -2,7 +2,7 @@
 using OpenQA.Selenium.Interactions;
 using WebDriverManager.DriverWrapper;
 
-namespace PageObjects.Pages;
+namespace PageObjects;
 
 public class LandingPage(IWebDriverWrapper driver) : BasePage(driver)
 {

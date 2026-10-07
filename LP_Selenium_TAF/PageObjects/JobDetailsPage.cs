@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
 using WebDriverManager.DriverWrapper;
 
-namespace PageObjects.Pages;
+namespace PageObjects;
 
 public class JobDetailsPage(IWebDriverWrapper driver) : BasePage(driver)
 {
