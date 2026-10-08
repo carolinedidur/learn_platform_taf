@@ -1,4 +1,4 @@
-﻿using LP.Selenium.TAF.Core.UI.DriverWrapper;
+﻿using LP.Selenium.TAF.Core.UI.Driver.DriverWrapper;
 using OpenQA.Selenium;
 
 namespace LP.Selenium.TAF.Core.UI.Pages;

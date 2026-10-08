@@ -1,42 +1,18 @@
-﻿using LP.Selenium.TAF.Core.UI.Driver;
-using LP.Selenium.TAF.Core.UI.DriverWrapper;
-using LP.Selenium.TAF.Core.UI.Pages;
-using Microsoft.Extensions.Configuration;
+﻿using LP.Selenium.TAF.Core.UI.Pages;
+using LP.Selenium.TAF.Tests.Base;
 using NUnit.Framework.Internal;
 
-namespace LP.Selenium.TAF.Tests;
+namespace LP.Selenium.TAF.Tests.UITests;
 
 [TestFixture]
-public class Tests
+public class EpamWebsiteTests : BaseTest
 {
-    private IDriverManager _driverManager = null!;
-    private IWebDriverWrapper _webDriverWrapper = null!;
-    private string _baseUrl = string.Empty;
-    private int _timeout;
     private LandingPage _landingPage;
-
-    [OneTimeSetUp]
-    public void OneTimeSetUp()
-    {
-        IConfiguration config = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json")
-            .Build();
-
-        _baseUrl = config["Environment:BaseUrl"] ?? throw new InvalidOperationException("BaseUrl missing.");
-        _timeout = config.GetValue<int?>("Driver:Timeout") ?? throw new InvalidOperationException("Timeout missing.");
-    }
 
     [SetUp]
     public void Setup()
     {
-        _driverManager = new DriverManager();
-        _webDriverWrapper = new WebDriverWrapper(_driverManager, TimeSpan.FromSeconds(_timeout));
-
-        _driverManager.StartBrowser();
-        _webDriverWrapper.NavigateTo(_baseUrl);
-
-        _landingPage = new LandingPage(_webDriverWrapper);
+        _landingPage = new LandingPage(Driver);
     }
 
     [TestCase(".NET", "Georgia")]
@@ -89,7 +65,7 @@ public class Tests
 
         _landingPage.DownloadFooterItem(itemTitle);
 
-        var filePath = _landingPage.WaitForDownload(_driverManager.DownloadDirectory, expectedFileName, TimeSpan.FromMinutes(1));
+        var filePath = _landingPage.WaitForDownload(expectedFileName, TimeSpan.FromMinutes(1));
 
         Assert.That(Path.GetFileName(filePath), Is.EqualTo(expectedFileName));
     }
@@ -110,11 +86,5 @@ public class Tests
         var articleTitle = insightsArticlePage.GetArticleTitle();
 
         Assert.That(carouselTitle, Is.EqualTo(articleTitle));
-    }
-
-    [TearDown]
-    public void TearDown()
-    {
-        _driverManager.QuitBrowser();
     }
 }

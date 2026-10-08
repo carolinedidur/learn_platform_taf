@@ -14,5 +14,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LP.Selenium.TAF.Core\LP.Selenium.TAF.Core.csproj" />
+  </ItemGroup>
 	  
 </Project>

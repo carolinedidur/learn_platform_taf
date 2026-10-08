@@ -1,4 +1,4 @@
-﻿using LP.Selenium.TAF.Core.UI.DriverWrapper;
+﻿using LP.Selenium.TAF.Core.UI.Driver.DriverWrapper;
 using OpenQA.Selenium;
 
 namespace LP.Selenium.TAF.Core.UI.Pages;
@@ -30,17 +30,9 @@ public class BasePage
         itemDownloadLink.Click();
     }
 
-    public string WaitForDownload(string directory, string expectedFileName, TimeSpan timeout)
+    public string WaitForDownload(string expectedFileName, TimeSpan timeout)
     {
-        var expectedPath = Path.Combine(directory, expectedFileName);
-
-        Driver.WaitUntilWithCustomTimeout(
-            _ => File.Exists(expectedPath)
-                            && !Directory.EnumerateFiles(directory, "*.crdownload").Any(),
-            timeout,
-            message: $"'{expectedFileName}' was not downloaded. Files in folder: [{string.Join(", ", Directory.EnumerateFiles(directory).Select(Path.GetFileName))}]");
-
-        return expectedPath;
+        return Driver.WaitForDownload(expectedFileName, timeout);
     }
 
     public void AcceptCookies()

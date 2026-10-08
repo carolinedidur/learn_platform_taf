@@ -1,9 +1,10 @@
-﻿using LP.Selenium.TAF.Core.UI.Driver;
+﻿using LP.Selenium.TAF.Core.UI.Driver.DriverManager;
+using LP.Selenium.TAF.Core.UI.Services.Download;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
-namespace LP.Selenium.TAF.Core.UI.DriverWrapper;
+namespace LP.Selenium.TAF.Core.UI.Driver.DriverWrapper;
 
 public class WebDriverWrapper(IDriverManager driverManager, TimeSpan timeout)
     : IWebDriverWrapper
@@ -12,6 +13,8 @@ public class WebDriverWrapper(IDriverManager driverManager, TimeSpan timeout)
     private readonly TimeSpan _timeout = timeout;
 
     public WebDriverWait Wait => new (_driverManager.Driver, _timeout);
+
+    public IDownloadService DownloadService => _driverManager.DownloadService;
 
     public IWebElement WaitUntilVisible(By locator)
     {
@@ -29,6 +32,18 @@ public class WebDriverWrapper(IDriverManager driverManager, TimeSpan timeout)
             var element = d.FindElement(locator);
             return element.Displayed && element.Enabled ? element : null;
         })!;
+    }
+
+    public string WaitForDownload(string expectedFileName, TimeSpan timeout)
+    {
+        var downloads = _driverManager.DownloadService;
+
+        WaitUntilWithCustomTimeout(
+            _ => downloads.Exists(expectedFileName) && !downloads.IsInProgress(),
+            timeout,
+            message: $"'{expectedFileName}' was not downloaded. Files in folder: [{string.Join(", ", downloads.GetFileNames())}]");
+
+        return downloads.GetPath(expectedFileName);
     }
 
     public T WaitUntilWithCustomTimeout<T>(Func<IWebDriver, T?> condition, TimeSpan timeout, string? message = null)

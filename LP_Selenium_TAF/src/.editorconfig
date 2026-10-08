@@ -161,6 +161,7 @@ dotnet_diagnostic.SA1101.severity = none
 dotnet_diagnostic.SA1121.severity = none
 dotnet_diagnostic.SA1009.severity = none
 dotnet_diagnostic.SA1602.severity = none
+dotnet_diagnostic.SA1010.severity = none
 
 # ---------------------------------------------------------------------
 # 4. COMMONLY-ADOPTED DEFAULTS (not in the team's standards doc)

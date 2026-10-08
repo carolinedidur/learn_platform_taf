@@ -2,7 +2,7 @@
 
 namespace LP.Selenium.TAF.Core.Configuration;
 
-public class ConfigurationService
+public class ConfigurationService : IConfigurationService
 {
     public ConfigurationService()
     {
