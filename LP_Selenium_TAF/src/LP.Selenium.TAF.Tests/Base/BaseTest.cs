@@ -1,4 +1,5 @@
 ﻿using LP.Selenium.TAF.Core.Configuration;
+using LP.Selenium.TAF.Core.Logging;
 using LP.Selenium.TAF.Core.UI.Driver.DriverManager;
 using LP.Selenium.TAF.Core.UI.Driver.DriverWrapper;
 
@@ -9,6 +10,8 @@ public class BaseTest
     public IDriverManager DriverManager { get; private set; }
 
     public IWebDriverWrapper Driver { get; private set; }
+
+    public ILogger Logger { get; private set; } = new Logger();
 
     private static IConfigurationService ConfigurationService { get; } = new ConfigurationService();
 

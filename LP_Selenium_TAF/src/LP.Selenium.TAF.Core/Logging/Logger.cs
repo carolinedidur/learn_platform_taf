@@ -1,7 +1,7 @@
 ﻿using log4net;
 using log4net.Config;
 
-namespace LP.Selenium.TAF.Core.Logger;
+namespace LP.Selenium.TAF.Core.Logging;
 
 public sealed class Logger : ILogger
 {

@@ -12,7 +12,7 @@ public class EpamWebsiteTests : BaseTest
     [SetUp]
     public void Setup()
     {
-        _landingPage = new LandingPage(Driver);
+        _landingPage = new LandingPage(Driver, Logger);
     }
 
     [TestCase(".NET", "Georgia")]

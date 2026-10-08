@@ -1,4 +1,4 @@
-﻿namespace LP.Selenium.TAF.Core.Logger;
+﻿namespace LP.Selenium.TAF.Core.Logging;
 
 public interface ILogger
 {
