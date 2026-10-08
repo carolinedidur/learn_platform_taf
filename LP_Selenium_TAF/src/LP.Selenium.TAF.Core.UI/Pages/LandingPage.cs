@@ -44,7 +44,7 @@ public class LandingPage(IWebDriverWrapper driver, ILogger logger)
 
         Logger.Info($"Entering search keyword: {keyword}");
 
-        var searchFieldTextbox = Driver.WaitUntilInteractable(_searchFieldTexboxLocator);
+        var searchFieldTextbox = Driver.WaitUntilInteractable(_searchFieldTextboxLocator);
         searchFieldTextbox.Clear();
         searchFieldTextbox.SendKeys(keyword);
 
