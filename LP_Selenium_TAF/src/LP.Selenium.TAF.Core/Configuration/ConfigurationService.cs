@@ -6,12 +6,16 @@ public class ConfigurationService : IConfigurationService
 {
     public ConfigurationService()
     {
-        var builder = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+        var environment = Environment.GetEnvironmentVariable("TAF_ENV") ?? "Dev";
 
-        var configuration = builder.Build();
-        Configuration = configuration.Get<AppConfig>()
+        var root = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: false)
+            .AddJsonFile($"appsettings.{environment}.json", optional: true)
+            .AddEnvironmentVariables(prefix: "TAF_")
+            .Build();
+
+        Configuration = root.Get<AppConfig>()
             ?? throw new InvalidOperationException("Failed to load application configuration.");
     }
 

@@ -10,7 +10,7 @@ public class EpamWebsiteTests : BaseTest
     private LandingPage _landingPage;
 
     [SetUp]
-    public void Setup()
+    public void EpamWebsiteSetup()
     {
         _landingPage = new LandingPage(Driver, Logger);
     }

@@ -32,6 +32,7 @@ public sealed class DriverManager(IConfigurationService configurationService)
     public void QuitBrowser()
     {
         _driver?.Quit();
+        DownloadService.Delete();
         _driver?.Dispose();
         _driver = null;
     }

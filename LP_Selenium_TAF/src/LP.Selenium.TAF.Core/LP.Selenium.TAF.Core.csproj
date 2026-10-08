@@ -10,12 +10,19 @@
 	<PackageReference Include="log4net" Version="3.5.0" />
 	<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.12" />
 	<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.12" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.12" />
 	<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="10.0.12" />
 	<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.12" />
 	<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
 	  <PrivateAssets>all</PrivateAssets>
 	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	</PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Logging\log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

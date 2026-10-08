@@ -26,17 +26,11 @@
     <ProjectReference Include="..\LP.Selenium.TAF.Core.UI\LP.Selenium.TAF.Core.UI.csproj" />
     <ProjectReference Include="..\LP.Selenium.TAF.Core\LP.Selenium.TAF.Core.csproj" />
   </ItemGroup>
-
+  
   <ItemGroup>
-	<None Update="appsettings.json">
-		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	</None>
-  </ItemGroup>
-
-  <ItemGroup>
-	  <None Update="Logger\log4net.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
+    <None Include="..\appsettings.json" Link="appsettings.json" Condition="Exists('..\appsettings.json')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

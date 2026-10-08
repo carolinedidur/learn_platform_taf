@@ -1,6 +1,7 @@
 ﻿using LP.Selenium.TAF.Core.Enums;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Chromium;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 
@@ -23,18 +24,7 @@ public static class DriverFactory
     {
         var options = new ChromeOptions();
 
-        if (headless)
-        {
-            options.AddArgument("--headless=new");
-            options.AddArgument("--no-sandbox");
-            options.AddArgument("--disable-dev-shm-usage");
-            options.AddArgument("--disable-gpu");
-            options.AddArgument("--window-size=1920,1080");
-        }
-
-        options.AddUserProfilePreference("download.default_directory", downloadDirectory);
-        options.AddUserProfilePreference("download.prompt_for_download", false);
-        options.AddUserProfilePreference("download.directory_upgrade", true);
+        ApplyChromiumOptions(options, downloadDirectory, headless);
 
         return new ChromeDriver(options);
     }
@@ -62,6 +52,13 @@ public static class DriverFactory
     {
         var options = new EdgeOptions();
 
+        ApplyChromiumOptions(options, downloadDirectory, headless);
+
+        return new EdgeDriver(options);
+    }
+
+    private static void ApplyChromiumOptions(ChromiumOptions options, string downloadDirectory, bool headless)
+    {
         if (headless)
         {
             options.AddArgument("--headless=new");
@@ -74,7 +71,5 @@ public static class DriverFactory
         options.AddUserProfilePreference("download.default_directory", downloadDirectory);
         options.AddUserProfilePreference("download.prompt_for_download", false);
         options.AddUserProfilePreference("download.directory_upgrade", true);
-
-        return new EdgeDriver(options);
     }
 }
