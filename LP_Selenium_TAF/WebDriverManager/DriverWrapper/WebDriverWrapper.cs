@@ -37,6 +37,12 @@ public class WebDriverWrapper(IDriverManager driverManager, TimeSpan timeout) : 
         return wait.Until(condition);
     }
 
+    public static bool IsDisplayed(IWebElement element)
+    {
+        return element.Displayed;
+    }
+
+
     public void NavigateTo(string url)
     {
         _driverManager.Driver.Navigate().GoToUrl(url);
@@ -46,6 +52,22 @@ public class WebDriverWrapper(IDriverManager driverManager, TimeSpan timeout) : 
     {
         new Actions(_driverManager.Driver)
             .ScrollToElement(element)
+            .Perform();
+    }
+
+    public void HoverOverElement(IWebElement element)
+    {
+        new Actions(_driverManager.Driver)
+            .MoveToElement(element)
+            .Perform();
+    }
+
+    public void HoverAndClick(IWebElement hoverTarget, IWebElement clickTarget)
+    {
+        new Actions(_driverManager.Driver)
+            .MoveToElement(hoverTarget)
+            .MoveToElement(clickTarget)
+            .Click()
             .Perform();
     }
 }

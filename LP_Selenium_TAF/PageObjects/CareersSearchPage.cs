@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework.Internal;
+using OpenQA.Selenium;
 using WebDriverManager.DriverWrapper;
 
 namespace PageObjects;
@@ -23,17 +24,21 @@ public class CareersSearchPage(IWebDriverWrapper driver) : BasePage(driver)
         var countryOption = Driver.WaitUntilInteractable(By.XPath(string.Format(_countryOptionLocator, country)));
         countryOption.Click();
 
+        WaitForLoaderCycle();
+
         var searchKeywordTextbox = Driver.WaitUntilInteractable(_searchKeywordTextboxLocator);
         searchKeywordTextbox.Clear();
         searchKeywordTextbox.SendKeys(language);
 
         WaitForLoaderCycle();
 
-        var remoteCheckBox = Driver.WaitUntilInteractable(_remoteCheckboxLocator);
-        remoteCheckBox.Click();
-
         var searchButton = Driver.WaitUntilInteractable(_searchButtonLocator);
         searchButton.Click();
+
+        WaitForLoaderCycle();
+
+        var remoteCheckBox = Driver.WaitUntilInteractable(_remoteCheckboxLocator);
+        remoteCheckBox.Click();
     }
 
     public JobDetailsPage OpenFirstFoundJob()
@@ -57,7 +62,7 @@ public class CareersSearchPage(IWebDriverWrapper driver) : BasePage(driver)
             Driver.WaitUntilWithCustomTimeout(d =>
             {
                 return d.FindElements(_loaderLocator).Any(e => e.Displayed);
-            }, TimeSpan.FromSeconds(3));
+            }, TimeSpan.FromSeconds(1));
         }
         catch (WebDriverTimeoutException)
         {

@@ -4,10 +4,10 @@ using PageObjects;
 using WebDriverManager.Driver;
 using WebDriverManager.DriverWrapper;
 
-namespace LocatorsForWebelements.Tests;
+namespace EpamWebsite.Tests.UITests;
 
 [TestFixture]
-public class Tests
+public class EpamWebsiteTests
 {
     private IDriverManager _driverManager = null!;
     private IWebDriverWrapper _webDriverWrapper = null!;

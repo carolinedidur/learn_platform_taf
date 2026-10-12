@@ -14,4 +14,6 @@ public interface IWebDriverWrapper
     public T WaitUntilWithCustomTimeout<T>(Func<IWebDriver, T?> condition, TimeSpan timeout, string? message = null);
     public void NavigateTo(string url);
     public void ScrollElementIntoView(IWebElement element);
+    public void HoverOverElement(IWebElement element);
+    public void HoverAndClick(IWebElement hoverTarget, IWebElement clickTarget);
 }
