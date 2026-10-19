@@ -1,11 +1,10 @@
-﻿using LP.Selenium.TAF.Core.Logging;
-using LP.Selenium.TAF.Core.UI.Driver.DriverWrapper;
+﻿using LP.Selenium.TAF.Core.UI.Driver.DriverWrapper;
 using OpenQA.Selenium;
 
 namespace LP.Selenium.TAF.Core.UI.Pages;
 
-public class CareersSearchPage(IWebDriverWrapper driver, ILogger logger)
-    : BasePage(driver, logger)
+public class CareersSearchPage(IWebDriverWrapper driver)
+    : BasePage(driver)
 {
     private static readonly By _loaderLocator = By.CssSelector("div[data-testid='preloader']");
     private static readonly By _locationSelectDropdownLocator = By.Id("react-select-2-input");
@@ -65,7 +64,7 @@ public class CareersSearchPage(IWebDriverWrapper driver, ILogger logger)
         var firstJobTitleLink = firstJobCard.FindElement(_jobCardTitleLinkLocator);
         firstJobTitleLink.Click();
 
-        return new JobDetailsPage(Driver, Logger);
+        return new JobDetailsPage(Driver);
     }
 
     public void WaitForLoaderCycle()

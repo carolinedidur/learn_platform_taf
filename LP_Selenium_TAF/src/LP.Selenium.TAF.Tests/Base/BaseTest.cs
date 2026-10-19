@@ -1,4 +1,5 @@
-﻿using LP.Selenium.TAF.Core.Configuration;
+﻿using log4net;
+using LP.Selenium.TAF.Core.Configuration;
 using LP.Selenium.TAF.Core.Logging;
 using LP.Selenium.TAF.Core.UI.Driver.DriverManager;
 using LP.Selenium.TAF.Core.UI.Driver.DriverWrapper;
@@ -20,6 +21,8 @@ public abstract class BaseTest
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
+        LogicalThreadContext.Properties["TestName"] = TestContext.CurrentContext.Test.Name;
+
         Core.Logging.Logger.Initialize(ConfigurationService);
     }
 
@@ -60,6 +63,7 @@ public abstract class BaseTest
         {
             DriverManager.QuitBrowser();
             Logger.Info("Browser closed");
+            LogicalThreadContext.Properties.Remove("TestName");
         }
     }
 

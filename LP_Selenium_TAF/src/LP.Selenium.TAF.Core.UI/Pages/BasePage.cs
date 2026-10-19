@@ -10,16 +10,15 @@ public class BasePage
     private static readonly By _acceptAllCookiesButtonLocator = By.XPath("//button[normalize-space()='Accept All']");
     private static readonly By _cookiesBannerLocator = By.CssSelector("div[aria-label='Cookie banner']");
 
-    protected BasePage(IWebDriverWrapper driver, ILogger logger)
+    protected BasePage(IWebDriverWrapper driver)
     {
         ArgumentNullException.ThrowIfNull(driver);
         Driver = driver;
-        Logger = logger;
     }
 
-    protected IWebDriverWrapper Driver { get; }
+    protected static ILogger Logger => Core.Logging.Logger.Instance;
 
-    protected ILogger Logger { get; }
+    protected IWebDriverWrapper Driver { get; }
 
     public void ScrollFooterIntoView()
     {

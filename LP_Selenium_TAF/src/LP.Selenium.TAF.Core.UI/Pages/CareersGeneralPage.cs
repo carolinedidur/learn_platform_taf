@@ -1,11 +1,10 @@
-﻿using LP.Selenium.TAF.Core.Logging;
-using LP.Selenium.TAF.Core.UI.Driver.DriverWrapper;
+﻿using LP.Selenium.TAF.Core.UI.Driver.DriverWrapper;
 using OpenQA.Selenium;
 
 namespace LP.Selenium.TAF.Core.UI.Pages;
 
-public class CareersGeneralPage(IWebDriverWrapper driver, ILogger logger)
-    : BasePage(driver, logger)
+public class CareersGeneralPage(IWebDriverWrapper driver)
+    : BasePage(driver)
 {
     private static readonly By _startSearchButtonLocator = By.CssSelector(".pinned-button .button-body");
 
@@ -16,6 +15,6 @@ public class CareersGeneralPage(IWebDriverWrapper driver, ILogger logger)
         var startSearchButton = Driver.WaitUntilInteractable(_startSearchButtonLocator);
         startSearchButton.Click();
 
-        return new CareersSearchPage(Driver, Logger);
+        return new CareersSearchPage(Driver);
     }
 }

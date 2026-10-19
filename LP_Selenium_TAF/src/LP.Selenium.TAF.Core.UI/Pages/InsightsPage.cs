@@ -1,11 +1,10 @@
-﻿using LP.Selenium.TAF.Core.Logging;
-using LP.Selenium.TAF.Core.UI.Driver.DriverWrapper;
+﻿using LP.Selenium.TAF.Core.UI.Driver.DriverWrapper;
 using OpenQA.Selenium;
 
 namespace LP.Selenium.TAF.Core.UI.Pages;
 
-public class InsightsPage(IWebDriverWrapper driver, ILogger logger)
-    : BasePage(driver, logger)
+public class InsightsPage(IWebDriverWrapper driver)
+    : BasePage(driver)
 {
     private static readonly By _rightNavigationArrowLocator = By.XPath("//div[@data-configuration='single-full-width']//button[contains(@class,'slider__right-arrow')]");
     private static readonly By _activeSlideLocator = By.XPath("//div[@data-configuration='single-full-width']//div[contains(@class,'owl-item') and contains(@class,'active')]");
@@ -42,6 +41,6 @@ public class InsightsPage(IWebDriverWrapper driver, ILogger logger)
 
         articleLink.Click();
 
-        return new InsightArticlePage(Driver, Logger);
+        return new InsightArticlePage(Driver);
     }
 }
