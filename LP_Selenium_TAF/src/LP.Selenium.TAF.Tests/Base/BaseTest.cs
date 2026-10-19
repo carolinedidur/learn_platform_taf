@@ -21,7 +21,7 @@ public abstract class BaseTest
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        LogicalThreadContext.Properties["TestName"] = TestContext.CurrentContext.Test.Name;
+        LogicalThreadContext.Properties["TestName"] = TestContext.CurrentContext.Test.ClassName;
 
         Core.Logging.Logger.Initialize(ConfigurationService);
     }
