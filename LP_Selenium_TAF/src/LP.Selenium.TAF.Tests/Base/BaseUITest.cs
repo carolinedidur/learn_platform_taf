@@ -8,10 +8,8 @@ using NUnit.Framework.Interfaces;
 
 namespace LP.Selenium.TAF.Tests.Base;
 
-public abstract class BaseTest
+public abstract class BaseUITest : BaseTestFixture
 {
-    public static ILogger Logger => Core.Logging.Logger.Instance;
-
     public IDriverManager DriverManager { get; private set; }
 
     public IWebDriverWrapper Driver { get; private set; }

@@ -5,7 +5,7 @@ using NUnit.Framework.Internal;
 namespace LP.Selenium.TAF.Tests.UITests;
 
 [TestFixture]
-public class EpamWebsiteTests : BaseTest
+public class EpamWebsiteTests : BaseUITest
 {
     private LandingPage _landingPage;
 

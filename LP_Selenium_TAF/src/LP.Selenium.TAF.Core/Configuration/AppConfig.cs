@@ -7,4 +7,6 @@ public class AppConfig
     public DriverConfig Driver { get; set; } = new ();
 
     public LoggerConfig Logger { get; set; } = new ();
+
+    public ApiConfig ApiConfig { get; set; } = new ();
 }

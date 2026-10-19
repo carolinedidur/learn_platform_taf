@@ -23,6 +23,7 @@
 	</ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LP.Selenium.TAF.Core.API\LP.Selenium.TAF.Core.API.csproj" />
     <ProjectReference Include="..\LP.Selenium.TAF.Core.UI\LP.Selenium.TAF.Core.UI.csproj" />
     <ProjectReference Include="..\LP.Selenium.TAF.Core\LP.Selenium.TAF.Core.csproj" />
   </ItemGroup>
