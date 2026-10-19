@@ -14,19 +14,11 @@ public abstract class BaseUITest : BaseTestFixture
 
     public IWebDriverWrapper Driver { get; private set; }
 
-    private static IConfigurationService ConfigurationService { get; } = new ConfigurationService();
-
-    [OneTimeSetUp]
-    public void OneTimeSetUp()
-    {
-        LogicalThreadContext.Properties["TestName"] = TestContext.CurrentContext.Test.Name;
-
-        Core.Logging.Logger.Initialize(ConfigurationService);
-    }
-
     [SetUp]
     public void SetUp()
     {
+        LogicalThreadContext.Properties["TestName"] = TestContext.CurrentContext.Test.ClassName;
+
         Logger.Info($"Test started: {TestContext.CurrentContext.Test.Name}");
 
         DriverManager = new DriverManager(ConfigurationService);

@@ -1,4 +1,5 @@
-﻿using LP.Selenium.TAF.Core.API.Client;
+﻿using log4net;
+using LP.Selenium.TAF.Core.API.Client;
 using LP.Selenium.TAF.Core.API.Factories;
 using NUnit.Framework.Interfaces;
 
@@ -11,6 +12,8 @@ public class BaseApiTest : BaseTestFixture
     [SetUp]
     public void SetUp()
     {
+        LogicalThreadContext.Properties["TestName"] = TestContext.CurrentContext.Test.ClassName;
+
         Logger.Info($"Test started: {TestContext.CurrentContext.Test.Name}");
 
         ApiClient = ApiClientFactory.Create(ConfigurationService);
@@ -29,5 +32,7 @@ public class BaseApiTest : BaseTestFixture
         {
             Logger.Info($"Test finished: {result.Outcome.Status}");
         }
+
+        LogicalThreadContext.Properties.Remove("TestName");
     }
 }

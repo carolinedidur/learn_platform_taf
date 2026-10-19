@@ -1,4 +1,5 @@
-﻿using LP.Selenium.TAF.Core.Configuration;
+﻿using log4net;
+using LP.Selenium.TAF.Core.Configuration;
 using LP.Selenium.TAF.Core.Logging;
 
 namespace LP.Selenium.TAF.Tests.Base;
