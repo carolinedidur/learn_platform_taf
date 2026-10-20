@@ -1,0 +1,86 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 8 * * 1-5' 
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: Browser for UI tests
+        type: choice
+        options: [chrome, firefox, edge]
+        default: chrome
+      environment:
+        description: Test environment
+        type: choice
+        options: [DEV, QA]
+        default: QA
+
+permissions:
+  contents: read
+
+env:
+  TEST_PROJECT: LP_Selenium_TAF/src/LP.Selenium.TAF.Tests/LP.Selenium.TAF.Tests.csproj
+  TAF_Driver__Browser: ${{ inputs.browser || 'chrome' }}
+  TAF_Driver__Headless: 'true'
+  TAF_ENV: ${{ inputs.environment || 'QA' }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x  
+
+      - name: Restore
+        run: dotnet restore "$TEST_PROJECT"
+
+      - name: Build
+        run: dotnet build "$TEST_PROJECT" --no-restore -c Release
+
+      - name: Run API tests
+        run: >
+          dotnet test "$TEST_PROJECT" --no-build -c Release
+          --filter "FullyQualifiedName~ApiTests"
+          --logger "trx;LogFileName=api-results.trx"
+          --results-directory ./TestResults
+
+      - name: Run UI tests
+        if: ${{ !cancelled() }}
+        run: >
+          dotnet test "$TEST_PROJECT" --no-build -c Release
+          --filter "FullyQualifiedName~UITests"
+          --logger "trx;LogFileName=ui-results.trx"
+          --results-directory ./TestResults
+
+      - name: Upload test results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults/*.trx
+
+      - name: Upload screenshots
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: '**/Screenshots/*.png'
+          if-no-files-found: ignore
+
+      - name: Upload logs
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs
+          path: '**/[Ll]ogs/**'
+          if-no-files-found: ignore
